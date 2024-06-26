@@ -1,13 +1,17 @@
-package main
+package encoding
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 	"strconv"
 )
 
-func decode7(encoded string) (decoded string) {
+func Decode(encoded string) (string, error) {
 	pattern := regexp.MustCompile("(^[0-9A-Fa-f]{2})([0-9A-Fa-f]+)")
+	if !pattern.MatchString(encoded) {
+		return "", fmt.Errorf("invalid encoded value")
+	}
 	result := pattern.FindAllStringSubmatch(encoded, -1)
 	rm := map[int]string{}
 	for i, n := range result[0] {
@@ -16,10 +20,12 @@ func decode7(encoded string) (decoded string) {
 	// Create an int from the first two characters of the string.
 	r1, err := strconv.ParseInt(rm[1], 10, 0)
 	if err != nil {
-		panic(err)
+		return "", errors.Join(fmt.Errorf("failed to parse encoded value"), err)
 	}
 	// Get the remainder of the string after the first two characters.
 	r2 := rm[2]
+
+	decoded := ""
 
 	// Iterate through the 2nd part of the string.
 	for pos := 0; pos < len(r2); pos++ {
@@ -32,13 +38,11 @@ func decode7(encoded string) (decoded string) {
 			// Convert the resulting combined strings to base16 integer.
 			m, err := strconv.ParseInt(m1+m2, 16, 0)
 			if err != nil {
-				panic(err)
+				return "", errors.Join(fmt.Errorf("failed to parse encoded value at position %d", pos), err)
 			}
 			var newchar string
 			if r1 <= 50 {
-				// I have no idea what this means.
-				xlat := getXlat()
-				idx := byte(m) ^ xlat[r1]
+				idx := byte(m) ^ XLAT[r1]
 				newchar = fmt.Sprintf("%c", idx)
 				r1 += 1
 			}
@@ -48,5 +52,5 @@ func decode7(encoded string) (decoded string) {
 			decoded += newchar
 		}
 	}
-	return decoded
+	return decoded, nil
 }

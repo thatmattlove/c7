@@ -1,8 +1,8 @@
 <div align="center">
   <h3><code>c7</code></h3>
   <br/>
-  <a href="https://github.com/thatmattlove/c7/actions?query=workflow%3Agoreleaser">
-    <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/thatmattlove/c7/goreleaser?color=9100fa&style=for-the-badge">
+  <a href="https://github.com/thatmattlove/c7/actions/workflows/tests.yml">
+    <img alt="Test Status" src="https://img.shields.io/github/actions/workflow/status/thatmattlove/c7/tests.yml?branch=main&event=push&style=for-the-badge">
   </a>
   <br/>
   Quickly Decode (or encode) a Cisco Type 7 Password at the Command Line
@@ -10,9 +10,13 @@
 
 ## Usage
 
-### Download the latest [release](https://github.com/thatmattlove/c7/releases/latest)
+### Install using [Goblin](https://goblin.run)
 
-There are multiple builds of the release, for different CPU architectures/platforms:
+```shell
+curl -sf http://goblin.run/github.com/thatmattlove/c7 | sh
+```
+
+### Download the latest [release](https://github.com/thatmattlove/c7/releases/latest)
 
 There are multiple builds of the release, for different CPU architectures/platforms. Download and unpack the release for your platform:
 
@@ -26,34 +30,41 @@ tar xvfz <release file> c7
 ```console
 $ ./c7 --help
 
-Decode (or Encode) Cisco Type 7 Passwords
+Usage: c7 <command> [flags]
 
-Options:
+Quickly Encode/Decode a Cisco Type 7 Password
 
-  -h, --help     show help
-  -e, --encode   Encode instead of decode
+Flags:
+  -h, --help    Show context-sensitive help.
+
+Commands:
+  encode (e) <value> [flags]
+    Encode a value to a Cisco type 7 hash
+
+  decode (d) <value> [flags]
+    Decode a Cisco type 7 hash back to plain text
+
+Run "c7 <command> --help" for more information on a command.
+```
+
+#### Encode
+
+```console
+$ c7 encode Password1234
+
+ Encoded
+ ─────────────────────────────
+  0236054818110033481F5B4A51
 ```
 
 #### Decode
 
 ```console
-$ ./c7 0236054818110033481F5B4A51
+$ c7 decode 06360E325F59060B0146405858
 
-Encoded: 0236054818110033481F5B4A51
-Decoded: Password1234
-
+ Decoded
+ ───────────────
+  Password1234
 ```
 
-#### Encode
-
-Coming Soon!
-
-## Creating a New Release
-
-This project uses [GoReleaser](https://goreleaser.com/) to manage releases. After completing code changes and committing them via Git, be sure to tag the release before pushing:
-
-```
-git tag <release>
-```
-
-Once a new tag is pushed, GoReleaser will automagically create a new build & release.
+![GitHub](https://img.shields.io/github/license/thatmattlove/c7?style=for-the-badge&color=black)
