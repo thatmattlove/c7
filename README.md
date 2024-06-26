@@ -5,7 +5,7 @@
     <img alt="Test Status" src="https://img.shields.io/github/actions/workflow/status/thatmattlove/c7/tests.yml?branch=main&event=push&style=for-the-badge">
   </a>
   <br/>
-  Quickly Decode (or encode) a Cisco Type 7 Password at the Command Line
+  Quickly Encode/Decode a Cisco Type 7 Password at the Command Line
 </div>
 
 ## Usage
